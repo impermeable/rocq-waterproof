@@ -213,7 +213,7 @@ Ltac2 solve_by_manipulating_negation_in (h_id : ident) :=
               intro $x_id
               (* with negation *)
             | [ |- ~(?a \/ ?b) -> (?c /\ ?d)] => apply (not_or_and_func $a $b $c $d)
-            | [ |- (?c /\ ?d) -> ~(?a \/ ?b)] => apply (not_or_and_func $a $b $c $d)
+            | [ |- (?c /\ ?d) -> ~(?a \/ ?b)] => apply (and_not_or_func $a $b $c $d)
             | [ |- ~(?a /\ ?b) -> (?c \/ ?d)] => apply (not_and_or_func $a $b $c $d)
             | [ |- (?c \/ ?d) -> ~(?a /\ ?b)] => apply (or_not_and_func $a $b $c $d)
             | [ |- ~(?a /\ ?b) -> (?a -> ?c)] => apply (not_and_impl_func $a $b $c)
