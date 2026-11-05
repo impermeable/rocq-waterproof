@@ -278,3 +278,12 @@ assert_feedback_with_strings (fun () => Help) Info
 "    (∀ n ∈ nat, n + 1 < 0)";
 "Hint, replace with: Use ... := ... in ...."].
 Abort.
+
+(** Test 24: Change the default help_auto_check tactic *)
+Ltac2 Set help_auto_check := Some (fun () => ()).
+
+Goal 0 = 0.
+Proof.
+assert_feedback_with_strings (fun () => Help) Info
+["You can try to expand definitions or use alternative characterizations:"].
+Abort.

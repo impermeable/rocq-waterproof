@@ -134,6 +134,23 @@ Local Ltac2 solvable_by_core_auto () :=
   Control.focus 1 1 (fun () => waterprove 5 true Main);
   clear $temp_id.
 
+(** Strategy used by [Help] to check whether the goal can be shown directly.
+    [None] disables the check. [Some tac]: [tac] should close the focused goal
+    or fail; its effect on the proof state is discarded. *)
+Ltac2 mutable help_auto_check : (unit -> unit) option :=
+  Some (fun () => waterprove 5 true Main).
+
+Local Ltac2 Type exn ::= [ AutoCheckResult (bool) ].
+
+Local Ltac2 solvable_by (tac : unit -> unit) : bool :=
+  match Control.case (fun () =>
+    Control.focus 1 1 (fun () =>
+      tac ();
+      Control.zero (AutoCheckResult (Int.equal (Control.numgoals ()) 0))))
+  with
+  | Err (AutoCheckResult b) => b
+  | _ => false
+  end.
 
 Local Ltac2 need_to_follow_advice () : bool :=
   let gl := Control.goal () in
@@ -204,17 +221,18 @@ Local Ltac2 is_empty (ls : 'a list) :=
   | _::_ => false
   | []   => true
   end.
+
 Ltac2 print_hints () :=
   (* If advice is given in proof window, suggest to follow that, nothing else. *)
   if (goal_wrapped_template_msg ())
     then (info_notice (of_string "Follow the advice in the goal window."))
 
     else
-      (* Then if proof can be shown automatically, suggest that, nothing else. *)
-      match Control.case (solvable_by_core_auto) with
-      | Val _           => goal_directly ()
-      | Err _         =>
-
+      let solvable := match help_auto_check with
+      | Some tac => solvable_by tac
+      | None => false
+      end in
+    if solvable then goal_directly () else
         (* Suggest hint to solve goal *)
         let hint_given := goal_hint () in
 
@@ -256,12 +274,7 @@ Ltac2 print_hints () :=
              Bool.neg hint_given;
              expand_list_empty]
           then (goal_no_hint ())
-          else ()
-        end.
-
-
-
-
+          else ().
 
 (** * Help tactic
     Tries to give a hint how to proceed proving the current goal.
