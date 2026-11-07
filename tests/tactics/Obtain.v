@@ -114,7 +114,7 @@ Abort.
 
 
 (** Test 9: throws error if variable name is 'Qed'
-    (quick fix for Waterproof editor / Coq lsp)  *)
+    (quick fix for Waterproof editor / Rocq lsp)  *)
 Goal (exists n : nat, n + 1 = n)%nat -> False.
 Proof.
   intro i.

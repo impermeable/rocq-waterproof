@@ -17,6 +17,23 @@
 (******************************************************************************)
 
 (**
+  Set the depth of the automation in the help function
+
+  Raises a user error if the depth is not between 1 and 5.
+*)
+val set_help_automation_depth : int -> unit
+
+(**
+  Retrieve the depth of the automation in the help function
+*)
+val get_help_automation_depth : unit -> int
+
+(**
+  Should the help function check whether the goal can be shown automatically ?
+*)
+val use_help_automation : bool ref
+
+(**
   Is automation shield enabled ?
 *)
 val automation_shield : bool ref
@@ -34,7 +51,7 @@ val print_rewrite_hints: bool ref
 (**
   Waterprove
 
-  This function is the main automatic solver of coq-waterproof.
+  This function is the main automatic solver of rocq-waterproof.
 
   The databases used for the proof search are the one declared in the current imported dataset (see {! Hint_dataset.loaded_hint_dataset}).
 

@@ -32,7 +32,7 @@ open Backtracking
 open Proofutils
 open Wp_auto
 
-(* All the definitions below come from coq-core hidden library (i.e not visible in the API) *)
+(* All the definitions below come from rocq-core hidden library (i.e not visible in the API) *)
 
 let eauto_unif_flags: Unification.unify_flags = auto_flags_of_state TransparentState.full
 
@@ -81,7 +81,7 @@ let e_exact (h: hint): unit tactic =
     Unsafe.tclEVARS sigma <*> e_give_exact c
   end
 
-(* All the definitions below are inspired by the coq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
+(* All the definitions below are inspired by the rocq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
 
 (**
   Cost to solve a hint

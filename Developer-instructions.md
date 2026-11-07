@@ -3,7 +3,7 @@
 ## Recommended setup
 
 Our recommended setup for working on the library is by using vscode on Linux, MacOS, or WSL, with
-the coq-lsp and ocaml extensions. We will now describe more extensively how to achieve this setup.
+the rocq-lsp and ocaml extensions. We will now describe more extensively how to achieve this setup.
 
 ### Installation of opam
 
@@ -31,15 +31,15 @@ Most development is done based off the main branch, and then the following setup
 ```
 opam init
 eval $(opam env)
-opam install coq-lsp.0.2.3+9.1
+opam install coq-lsp.0.2.5+9.1
 opam install ocaml-lsp-server
 ```
 replacing 9.1 with the desired version of Rocq, or more generally, replacing
-0.2.3+9.1 by the desired version of coq-lsp.
+0.2.5+9.1 by the desired version of rocq-lsp.
 
 ### Creating the desired opam environment: advanced version for supporting multiple versions of Rocq
 
-When we bring changes into different versions of Coq (for instance for the branches 8.18, 8.19...)
+When we bring changes into different versions of Rocq (for instance for the branches 9.0, 9.1...)
 it is convenient to have multiple opam environement, i.e. switches, available. If you prefer to start
 with such a setup anyway, you can run
 ```
@@ -51,15 +51,15 @@ opam switch create your_preferred_switch_name ocaml-base-compiler.4.14.1
 ```
 Next you can install the background libraries again
 ```
-opam install coq-lsp.0.2.3+9.0
+opam install coq-lsp.0.2.4+9.0
 opam install ocaml-lsp-server
 ```
-again replacing 9.0 with the desired version of Coq
+again replacing 9.0 with the desired version of Rocq
 
 ### Caveat: locally compiling the coq-master branch
 
 The above only works partially when checking work for `coq-master`,  which is a very important
-branch for us because it is checked in Coq's CI. To just check locally whether the code works on the
+branch for us because it is checked in Rocq's CI. To just check locally whether the code works on the
 `coq-master` branch, we can setup
 ```
 opam switch create your_preferred_switch_name ocaml-base-compiler.4.14.1
@@ -76,32 +76,32 @@ opam install coq.dev
 
 ## Building with dune
 
-Our go-to way for compiling `coq-waterproof` while working on the library is by using dune. To do so, from the project's
-root (i.e. inside the directory `...some-path.../coq-waterproof/`), run
+Our go-to way for compiling `rocq-waterproof` while working on the library is by using dune. To do so, from the project's
+root (i.e. inside the directory `...some-path.../rocq-waterproof/`), run
 ```
-dune build -p coq-waterproof
+dune build -p rocq-waterproof
 ```
 To then install the library so it is available from other projects, you can run
 ```
-dune install -p coq-waterproof
+dune install -p rocq-waterproof
 ```
 
 ## Building with opam
 
-The above method does not pin `coq-waterproof` to the local version in the working
+The above method does not pin `rocq-waterproof` to the local version in the working
 directory. Instead, one can run, from the root directory,
 ```
 opam install .
 ```
-and `coq-waterproof` _will_ be pinned to the local version, and will
+and `rocq-waterproof` _will_ be pinned to the local version, and will
 be installed (in the current opam switch).
 
 ## Warning
 
-When importing Waterproof in a .v file when using coq-lsp, we standard get the following warning
+When importing Waterproof in a .v file when using rocq-lsp, we standard get the following warning
 
 ```
-Serlib plugin: coq-waterproof.plugin is not available: serlib support is missing. Incremental checking for commands in this plugin will be impacted.
+Serlib plugin: rocq-waterproof.plugin is not available: serlib support is missing. Incremental checking for commands in this plugin will be impacted.
 ```
 
 This is not a problem.
@@ -114,7 +114,7 @@ such as `Choose`, `Assume`, both have a file that defines them, and a file
 that tests them. The tests are run automatically when compiling the library, i.e.
 when running
 ```
-dune build -p coq-waterproof
+dune build -p rocq-waterproof
 ```
 
 ## Running external tests
@@ -128,12 +128,12 @@ to be tested to any name in the `test-exercises` folder.
 
 
 ```
-dune build -p coq-waterproof @runtest
+dune build -p rocq-waterproof @runtest
 ```
 
 ## Setting up VSCode
 
-If you use VSCode, we recommend installing the [OCaml Platform](https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform) and [Coq LSP](https://marketplace.visualstudio.com/items?itemName=ejgallego.coq-lsp) plugins.
+If you use VSCode, we recommend installing the [OCaml Platform](https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform) and [Rocq LSP](https://marketplace.visualstudio.com/items?itemName=ejgallego.coq-lsp) plugins.
 
 ## Making Ocaml functions available from Ltac2: Using the foreign function interface (ffi)
 

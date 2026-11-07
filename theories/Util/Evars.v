@@ -21,9 +21,9 @@ Require Export Ltac2.Ltac2.
 Require Import Waterproof.Waterproof.
 Require Import Waterproof.Notations.Common.
 
-Ltac2 @ external refine_goal_with_evar : string -> unit := "rocq-runtime.plugins.coq-waterproof" "refine_goal_with_evar_external".
+Ltac2 @ external refine_goal_with_evar : string -> unit := "rocq-runtime.plugins.rocq-waterproof" "refine_goal_with_evar_external".
 
-Ltac2 @ external blank_evars_in_term : constr -> evar list := "rocq-runtime.plugins.coq-waterproof" "blank_evars_in_term_external".
+Ltac2 @ external blank_evars_in_term : constr -> evar list := "rocq-runtime.plugins.rocq-waterproof" "blank_evars_in_term_external".
 
 Ltac2 rename_blank_evars_in_term (base_name : string) (x : constr) :=
   let evars := blank_evars_in_term x in

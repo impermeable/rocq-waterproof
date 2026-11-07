@@ -103,12 +103,12 @@ Ltac2 induction_without_hypothesis_naming (x: ident) :=
     throw (of_string "Cannot apply natural induction on this goal.")
   end.
 
-(* Quick fix for Wateproof editor / Coq lsp, where
+(* Quick fix for Wateproof editor / Rocq lsp, where
   [We use induction on
 
    Qed.]
   was interpreted [We use induction on Qed.].
-  Although in Coq [Qed] is acceptable as variable name, it is confusing.
+  Although in Rocq [Qed] is acceptable as variable name, it is confusing.
   Hence we throw an error in the form of a 'Syntax error'.
 
   TODO: can probably be fixed with binders...

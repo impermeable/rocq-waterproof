@@ -76,7 +76,7 @@ module type Mergeable = sig
 
 end
 
-(** Generalization of tactics defined in coq-core for {! Mergeable}-typed tactics *)
+(** Generalization of tactics defined in rocq-core for {! Mergeable}-typed tactics *)
 module TypedTactics(M: Mergeable) = struct
 
   (** Merge of tactics' returned elements *)
@@ -196,7 +196,7 @@ let tclTraceFirst (tacs: trace tactic list): trace tactic =
   in aux tacs no_trace
 
 (**
-  Rewrite of Coq's hint printer to keep only the necessary parts
+  Rewrite of Rocq's hint printer to keep only the necessary parts
 *)
 let pr_hint (env: Environ.env) (sigma: Evd.evar_map) (h: FullHint.t) =
   let pr_hint_elt env sigma h = Printer.pr_econstr_env env sigma (snd @@ hint_as_term h) in

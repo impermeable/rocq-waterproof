@@ -1,8 +1,8 @@
 (coq.theory
   (name __WaterproofTests)
-  (package coq-waterproof)
+  (package rocq-waterproof)
   (flags :standard)
-  (plugins coq-waterproof.plugin rocq-runtime.plugins.ltac rocq-runtime.plugins.ltac2)
+  (plugins rocq-waterproof.plugin rocq-runtime.plugins.ltac rocq-runtime.plugins.ltac2)
   (theories Waterproof))
 
 (include_subdirs qualified)

@@ -284,7 +284,7 @@ Open Scope R_scope.
 Close Scope R_scope.
 
 (** *
-  Because the typeclasses used for the link-symbols '&=' are so general, they are unable to automatically make use of coercions, e.g. the chain (& INR 0 < 1 = 1) is not accepted, Coq says it is unable to find an interpretation for (EqLink R nat ?C).
+  Because the typeclasses used for the link-symbols '&=' are so general, they are unable to automatically make use of coercions, e.g. the chain (& INR 0 < 1 = 1) is not accepted, Rocq says it is unable to find an interpretation for (EqLink R nat ?C).
 
   We thus have to add all these cases manually.
 *)

@@ -32,6 +32,11 @@ Require Import Notations.Sets.
 Require Import Waterprove.
 Open Scope subset_scope.
 
+Local Ltac2 @ external get_help_automation_depth_ffi : unit -> int :=
+  "rocq-runtime.plugins.rocq-waterproof" "get_help_automation_depth_external".
+Local Ltac2 @ external get_use_help_automation_ffi : unit -> bool :=
+  "rocq-runtime.plugins.rocq-waterproof" "get_use_help_automation_external".
+
 Local Ltac2 goal_impl_msg (premise: constr) :=
   info_notice (concat_list [of_string "The goal is to show an implication (⇒). Assume the premise "; of_constr premise; of_string "."]);
   replace_msg "Assume that ...." "Assume that ${0:0 = 0}.${1}".
@@ -124,16 +129,19 @@ Local Ltac2 goal_forall_el_msg (var_type: constr) :=
   info_notice (concat_list [of_string "The goal is to show a 'for all'-statement (∀). Introduce an arbitrary variable in "; of_constr var_type; of_string "."]);
   replace_msg "Take ... ∈ ...." "Take ${0:x} ∈ ${1:X}.${2}".
 
-(**
-  Auxilliary tactic that checks if goal can be shown with automation
-*)
-Local Ltac2 solvable_by_core_auto () :=
-  let temp_id := Fresh.in_goal @temp in
-  let goal := Control.goal () in
-  assert $goal as $temp_id;
-  Control.focus 1 1 (fun () => waterprove 5 true Main);
-  clear $temp_id.
+Local Ltac2 Type exn ::= [ AutoCheckResult (bool) ].
 
+(** Checks whether [tac] closes the focused goal. Only the first success of
+    [tac] is used, and its effect on the proof state is discarded. *)
+Local Ltac2 solvable_by (tac : unit -> unit) : bool :=
+  match Control.case (fun () =>
+    Control.focus 1 1 (fun () =>
+      Control.once tac;
+      Control.zero (AutoCheckResult (Int.equal (Control.numgoals ()) 0))))
+  with
+  | Err (AutoCheckResult b) => b
+  | _ => false
+  end.
 
 Local Ltac2 need_to_follow_advice () : bool :=
   let gl := Control.goal () in
@@ -204,6 +212,7 @@ Local Ltac2 is_empty (ls : 'a list) :=
   | _::_ => false
   | []   => true
   end.
+
 Ltac2 print_hints () :=
   (* If advice is given in proof window, suggest to follow that, nothing else. *)
   if (goal_wrapped_template_msg ())
@@ -211,10 +220,11 @@ Ltac2 print_hints () :=
 
     else
       (* Then if proof can be shown automatically, suggest that, nothing else. *)
-      match Control.case (solvable_by_core_auto) with
-      | Val _           => goal_directly ()
-      | Err _         =>
-
+      let solvable :=
+        if get_use_help_automation_ffi ()
+        then solvable_by (fun () => waterprove (get_help_automation_depth_ffi ()) true Main)
+        else false in
+      if solvable then goal_directly () else
         (* Suggest hint to solve goal *)
         let hint_given := goal_hint () in
 
@@ -256,12 +266,7 @@ Ltac2 print_hints () :=
              Bool.neg hint_given;
              expand_list_empty]
           then (goal_no_hint ())
-          else ()
-        end.
-
-
-
-
+          else ().
 
 (** * Help tactic
     Tries to give a hint how to proceed proving the current goal.

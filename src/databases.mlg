@@ -16,7 +16,7 @@
 (*                                                                            *)
 (******************************************************************************)
 
-DECLARE PLUGIN "coq-waterproof.plugin"
+DECLARE PLUGIN "rocq-waterproof.plugin"
 
 {
 

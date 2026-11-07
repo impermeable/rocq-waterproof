@@ -32,12 +32,12 @@ val feedback_log : Feedback.level -> Pp.t list ref
 val wp_feedback_logger_id : int option ref
 
 (**
-  Our own logger that we add as a feeder to Coq's feedback mechanism in Feedback.mli
+  Our own logger that we add as a feeder to Rocq's feedback mechanism in Feedback.mli
 *)
 val wp_feedback_logger : Feedback.feedback -> unit
 
 (**
-  Adds the wp_feedback_logger to Coq's feeedback mechanism
+  Adds the wp_feedback_logger to Rocq's feedback mechanism
 *)
 val add_wp_feedback_logger : unit -> unit
 
@@ -64,7 +64,7 @@ val redirect_feedback : bool ref
 val redirect_errors : bool ref
 
 (**
-  Type of exceptions used in Wateproof
+  Type of exceptions used in Waterproof
 *)
 type wexn =
   | CastError of string (** Indicates that a cast made by the FFI has failed  *)

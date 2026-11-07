@@ -59,7 +59,7 @@ Proof.
 Qed.
 
 (* Test 2: throws error if variable name is 'Qed'
-    (quick fix for Waterproof editor / Coq lsp)  *)
+    (quick fix for Waterproof editor / Rocq lsp)  *)
 Goal forall n : nat, (n = n).
 Proof.
     Fail We use induction on Qed.

@@ -125,6 +125,13 @@ let intuition: hint_dataset = {
   shorten_databases: hint_db_name list = ["wp_intuition"];
 }
 
+let finite_sums: hint_dataset = {
+  name = "FiniteSums";
+  main_databases: hint_db_name list = ["wp_finite_sums"];
+  decidability_databases: hint_db_name list = [];
+  shorten_databases: hint_db_name list = ["wp_finite_sums"];
+}
+
 let classical_epsilon: hint_dataset = {
   name = "ClassicalEpsilon";
   main_databases: hint_db_name list = [];

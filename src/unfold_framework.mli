@@ -57,8 +57,6 @@ val register_unfold_entry : GlobRef.t -> unfold_entry -> unit
 
 val extract_def : string -> GlobRef.t option
 
-val wp_unfold_tbl : (GlobRef.t, unfold_action) Hashtbl.t ref
-
 val find_unfold_actions_by_ref : GlobRef.t -> unfold_action list
 
 val find_unfold_actions_by_str : string -> unfold_action list

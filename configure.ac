@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Coq-Waterproof], [2.0.0-git])
+AC_INIT([Rocq-Waterproof], [2.0.0-git])
 
 AC_DEFUN([AX_VERSION_GE], [AS_VERSION_COMPARE([$1],[$2],[$4],[$3],[$3])])
 

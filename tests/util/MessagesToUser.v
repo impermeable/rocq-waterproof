@@ -43,7 +43,7 @@ assert_is_false (get_print_hypothesis_flag ()).
 Abort.
 
 (** Test whether feedback levels are correctly passed through the ffi. *)
-Ltac2 @ external check_feedback_level_Ltac2_to_Ocaml_ffi : FeedbackLevel -> int -> bool := "rocq-runtime.plugins.coq-waterproof" "check_feedback_level_Ltac2_to_Ocaml_external".
+Ltac2 @ external check_feedback_level_Ltac2_to_Ocaml_ffi : FeedbackLevel -> int -> bool := "rocq-runtime.plugins.rocq-waterproof" "check_feedback_level_Ltac2_to_Ocaml_external".
 
 Goal False.
 assert_is_true (check_feedback_level_Ltac2_to_Ocaml_ffi Debug 0).
@@ -54,7 +54,7 @@ assert_is_true (check_feedback_level_Ltac2_to_Ocaml_ffi Error 4).
 Abort.
 
 (** Test a round-trip of feedback levels *)
-Ltac2 @ external feedback_level_round_trip_ffi : FeedbackLevel -> FeedbackLevel := "rocq-runtime.plugins.coq-waterproof" "feedback_level_round_trip_external".
+Ltac2 @ external feedback_level_round_trip_ffi : FeedbackLevel -> FeedbackLevel := "rocq-runtime.plugins.rocq-waterproof" "feedback_level_round_trip_external".
 
 Goal False.
 match feedback_level_round_trip_ffi Debug with

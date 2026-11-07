@@ -25,12 +25,12 @@ Require Import Util.Goals.
 Require Import Util.Hypothesis.
 Require Import Util.MessagesToUser.
 
-Local Ltac2 check_wrong_prop_specified (user_type:constr) (coq_type:constr) :=
- match Constr.equal user_type coq_type with
+Local Ltac2 check_wrong_prop_specified (user_type:constr) (rocq_type:constr) :=
+ match Constr.equal user_type rocq_type with
     | true  => ()
     | false => throw (concat_list
       [of_string "Property "; of_constr user_type; of_string " should be ";
-       of_constr coq_type; of_string "."])
+       of_constr rocq_type; of_string "."])
   end.
 
 (**
