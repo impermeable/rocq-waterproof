@@ -27,6 +27,7 @@ Require Export Tactics.Choose.
 Require Export Tactics.Obtain.
 Require Export Tactics.Conclusion.
 Require Export Tactics.Contradiction.
+Require Export Tactics.Contraposition.
 Require Export Tactics.Define.
 Require Export Tactics.Either.
 Require Export Tactics.Help.
