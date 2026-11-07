@@ -3,7 +3,7 @@ name: "rocq-waterproof"
 version: "3.1.1+9.0"
 maintainer: "Jim Portegies <j.w.portegies@tue.nl>"
 authors: [
-  "Jelle Wemmenhove"
+  "Jente Wemmenhove"
   "Pim Otte"
   "Balthazar Pathiachvili"
   "Dick Arends"
