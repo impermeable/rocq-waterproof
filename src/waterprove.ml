@@ -27,6 +27,37 @@ open Wp_eauto
 open Wp_rewrite
 
 (**
+  What should the depth of the automation in the help function be ?
+*)
+let help_automation_depth : int ref = Summary.ref ~name:"help_automation_depth" 2
+
+(**
+  Largest allowed depth for the automation in the help function
+*)
+let max_help_automation_depth : int = 5
+
+(**
+  Set the depth of the automation in the help function, checking that it is in range
+*)
+let set_help_automation_depth (depth : int) : unit =
+  if depth < 1 || depth > max_help_automation_depth then
+    CErrors.user_err Pp.(str "The depth of the help automation should be between 1 and "
+      ++ int max_help_automation_depth ++ str ".")
+  else
+    help_automation_depth := depth
+
+(**
+  Retrieve the depth of the automation in the help function
+*)
+let get_help_automation_depth () : int =
+  !help_automation_depth
+
+(**
+  Should the help function check whether the goal can be shown automatically ?
+*)
+let use_help_automation : bool ref = Summary.ref ~name:"use_help_automation" true
+
+(**
   Is automation shield enabled ?
 *)
 let automation_shield: bool ref = Summary.ref ~name:"automation_shield" true

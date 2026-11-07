@@ -278,3 +278,53 @@ assert_feedback_with_strings (fun () => Help) Info
 "    (∀ n ∈ nat, n + 1 < 0)";
 "Hint, replace with: Use ... := ... in ...."].
 Abort.
+
+(** Test 24: Disable the automation in the help function *)
+Waterproof Disable Help Automation.
+
+Goal 0 = 0.
+Proof.
+assert_feedback_with_strings (fun () => Help) Info
+["You can try to expand definitions or use alternative characterizations:"].
+Abort.
+
+Waterproof Enable Help Automation.
+
+(** Test 25: The goal can be shown immediately after re-enabling the automation *)
+Goal 0 = 0.
+Proof.
+assert_feedback_with_strings (fun () => Help) Info
+["The goal can be shown immediately.";
+"Hint, replace with: We conclude that ...."].
+Abort.
+
+(** Test 26: With a large enough automation depth, a chain of implications
+    can be shown immediately. Every implication costs a step of the automation,
+    unlike e.g. arithmetic, which a single hint (lia, congruence) can solve. *)
+Waterproof Set Help Automation Depth 5.
+
+Goal forall P Q R S : Prop, (P -> Q) -> (Q -> R) -> (R -> S) -> P -> S.
+Proof.
+intros P Q R S H1 H2 H3 p.
+assert_feedback_with_strings (fun () => Help) Info
+["The goal can be shown immediately.";
+"Hint, replace with: We conclude that ...."].
+Abort.
+
+(** Test 27: With automation depth 1, the same chain of implications is not
+    shown immediately. *)
+Waterproof Set Help Automation Depth 1.
+
+Goal forall P Q R S : Prop, (P -> Q) -> (Q -> R) -> (R -> S) -> P -> S.
+Proof.
+intros P Q R S H1 H2 H3 p.
+assert_feedback_with_strings (fun () => Help) Info
+["You can try to expand definitions or use alternative characterizations:"].
+Abort.
+
+(** Test 28: The automation depth should be between 1 and 5 *)
+Fail Waterproof Set Help Automation Depth 0.
+Fail Waterproof Set Help Automation Depth 6.
+
+(* Reset to the default depth *)
+Waterproof Set Help Automation Depth 2.

@@ -21,6 +21,7 @@ DECLARE PLUGIN "rocq-waterproof.plugin"
 {
 open Exceptions
 open Waterprove
+open Stdarg
 
 let waterproof_version : string = "3.1.1+9.0-dev"
 
@@ -146,6 +147,27 @@ VERNAC COMMAND EXTEND PrintHypothesisHelpDisableSideEff CLASSIFIED AS SIDEFF
       print_hypothesis_help := false
     }
   END
+
+VERNAC COMMAND EXTEND HelpAutomationDepthSideEff CLASSIFIED AS SIDEFF
+  | [ "Waterproof" "Set" "Help" "Automation" "Depth" int(n) ] ->
+    {
+      set_help_automation_depth n
+    }
+END
+
+VERNAC COMMAND EXTEND HelpAutomationEnableSideEff CLASSIFIED AS SIDEFF
+  | [ "Waterproof" "Enable" "Help" "Automation" ] ->
+    {
+      use_help_automation := true
+    }
+END
+
+VERNAC COMMAND EXTEND HelpAutomationDisableSideEff CLASSIFIED AS SIDEFF
+  | [ "Waterproof" "Disable" "Help" "Automation" ] ->
+    {
+      use_help_automation := false
+    }
+END
 
 VERNAC COMMAND EXTEND PrintVersionSideEff CLASSIFIED AS SIDEFF
   | [ "Waterproof" "Print" "Version" ] ->

@@ -225,3 +225,11 @@ let () =
 let () =
   define "message_of_lconstr" (constr @-> tac pp) @@ fun c ->
   Ltac2_plugin.Tac2core.pf_apply @@ fun env sigma -> Proofview.tclUNIT (Printer.pr_leconstr_env env sigma c)
+
+let () =
+  define "get_help_automation_depth_external" (unit @-> ret int) @@
+    get_help_automation_depth
+
+let () =
+  define "get_use_help_automation_external" (unit @-> ret bool) @@
+    fun () -> !use_help_automation
