@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "rocq-waterproof"
-version: "3.1.1+9.0-dev"
+version: "3.1.1+9.0"
 maintainer: "Jim Portegies <j.w.portegies@tue.nl>"
 authors: [
   "Jelle Wemmenhove"

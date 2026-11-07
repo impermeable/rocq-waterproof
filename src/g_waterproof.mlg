@@ -23,7 +23,7 @@ open Exceptions
 open Waterprove
 open Stdarg
 
-let waterproof_version : string = "3.1.1+9.0-dev"
+let waterproof_version : string = "3.1.1+9.0"
 
 (* The code below is a hack to patch in (open_)lconstr into Ltac2 *)
 (* It should be removed when merged to coq-master (open_)lconstr should be in release 9.1 *)
