@@ -1,5 +1,16 @@
 # Change log for the rocq-waterproof library
 
+## Version 3.1.1+9.0
+
+- Name change to rocq-waterproof
+- Fix confusing absolute value notation
+- Add support for finite sums
+- Add a tactic for arguing by contraposition
+- Make automation in `Help` customizable (`Waterproof Set Help Automation Depth n`, `Waterproof Enable/Disable Help Automation`), and lower the default depth from 5 to 2
+- Fix bug in expanding definitions when multiple goals are open
+- Fix bug in negation of a disjunction
+- Fix bug (state handling) in unfold framework
+
 ## Version 3.1.0+9.0
 
 - No longer throw an error if there are unused lemmas (this speeds up automation when using `By ... it holds that ...`)
