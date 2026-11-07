@@ -19,7 +19,7 @@ description: """
 The Waterproof plugin for the Rocq proof assistant allows you to write Rocq proofs in a style that resembles handwritten mathematical proofs, designed to help university students with learning how to prove mathematical statements.
 """
 
-license: "LGPL-3.0-or-later"
+license: "GPL-3.0-or-later"
 homepage: "https://github.com/impermeable/rocq-waterproof"
 dev-repo: "git+https://github.com/impermeable/rocq-waterproof.git"
 bug-reports: "https://github.com/impermeable/rocq-waterproof/issues"
