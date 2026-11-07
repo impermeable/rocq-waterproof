@@ -36,14 +36,14 @@ open Wp_evars
 open Unfold_framework
 
 (** Creates a name used to define the function interface *)
-let pname (s: string): ml_tactic_name = { mltac_plugin = "rocq-runtime.plugins.coq-waterproof"; mltac_tactic = s }
+let pname (s: string): ml_tactic_name = { mltac_plugin = "rocq-runtime.plugins.rocq-waterproof"; mltac_tactic = s }
 
 let define s = Ltac2_plugin.Tac2externals.define (pname s)
 
-(** Comes from [coq/plugins/ltac2/tac2tactics.ml] *)
+(** Comes from [rocq/plugins/ltac2/tac2tactics.ml] *)
 let thaw (f: (unit, 'a) fun1): 'a tactic = f ()
 
-(** Comes from [coq/plugins/ltac2/tac2tactics.ml] *)
+(** Comes from [rocq/plugins/ltac2/tac2tactics.ml] *)
 let delayed_of_tactic (tac: 'a tactic) (env: Environ.env) (sigma: Evd.evar_map): (Evd.evar_map * 'a) =
   let _, pv = Proofview.init sigma [] in
   let name, poly = Names.Id.of_string "ltac2_delayed", false in
@@ -54,7 +54,7 @@ let delayed_of_tactic (tac: 'a tactic) (env: Environ.env) (sigma: Evd.evar_map):
 (**
   Utility function to cast OCaml types into Ltac2-compatibles types
 
-  Comes from [coq/plugins/ltac2/tac2tactics.ml]
+  Comes from [rocq/plugins/ltac2/tac2tactics.ml]
 *)
 let delayed_of_thunk (tac: (unit, 'a) fun1) (env: Environ.env) (sigma: Evd.evar_map): (Evd.evar_map * 'a) =
   delayed_of_tactic (thaw tac) env sigma
@@ -225,3 +225,11 @@ let () =
 let () =
   define "message_of_lconstr" (constr @-> tac pp) @@ fun c ->
   Ltac2_plugin.Tac2core.pf_apply @@ fun env sigma -> Proofview.tclUNIT (Printer.pr_leconstr_env env sigma c)
+
+let () =
+  define "get_help_automation_depth_external" (unit @-> ret int) @@
+    get_help_automation_depth
+
+let () =
+  define "get_use_help_automation_external" (unit @-> ret bool) @@
+    fun () -> !use_help_automation

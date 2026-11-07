@@ -33,9 +33,9 @@ $(COQ_MAKEFILE): $(COQ_PROJ) $(LTAC2_PLUGIN_DIR) ltac2_prerequisite
 
 help:
 	@echo	"You can run:"
-	@echo 	"	* 'make' to build coq-waterproof"
-	@echo 	"	* 'make install' to install coq-waterproof"
-	@echo 	"	* 'make uninstall' to uninstall coq-waterproof"
+	@echo 	"	* 'make' to build rocq-waterproof"
+	@echo 	"	* 'make install' to install rocq-waterproof"
+	@echo 	"	* 'make uninstall' to uninstall rocq-waterproof"
 	@echo 	"	* 'make doc' to generate documentation of the library"
 	@echo 	"	* 'make clean' to remove generated files"
 

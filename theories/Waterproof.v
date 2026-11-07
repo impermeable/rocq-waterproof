@@ -17,4 +17,4 @@
 (******************************************************************************)
 
 From Ltac2 Require Import Init.
-Declare ML Module "coq-waterproof.plugin".
+Declare ML Module "rocq-waterproof.plugin".

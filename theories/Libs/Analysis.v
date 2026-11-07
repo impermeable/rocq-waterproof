@@ -17,6 +17,7 @@
 (******************************************************************************)
 
 Require Export Libs.Analysis.ContinuityDomainR.
+Require Export Libs.Analysis.FiniteSums.
 Require Export Libs.Analysis.LimsupLiminfBolzano.
 Require Export Libs.Analysis.MetricSpaces.
 Require Export Libs.Analysis.OpenAndClosed.

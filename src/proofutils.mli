@@ -112,7 +112,7 @@ module type Mergeable = sig
 
 end
 
-(** Generalization of tactics defined in coq-core for {! Mergeable}-typed tactics *)
+(** Generalization of tactics defined in rocq-core for {! Mergeable}-typed tactics *)
 module TypedTactics : functor (M : Mergeable) -> sig
 
   (** Merge of tactics' returned elements *)
@@ -206,7 +206,7 @@ val tclTraceFirst :
   Backtracking.trace Proofview.tactic
 
 (**
-  Rewrite of Coq's hint printer to keep only the necessary parts
+  Rewrite of Rocq's hint printer to keep only the necessary parts
 *)
 val pr_hint :
   Environ.env -> Evd.evar_map -> Hints.FullHint.t -> Pp.t

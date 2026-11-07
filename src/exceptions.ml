@@ -57,7 +57,7 @@ let wp_feedback_logger (fb : feedback) : unit =
   | _ -> ()
 
 (**
-  Adds wp_feedback_logger to Coq's feedback mechanism
+  Adds wp_feedback_logger to Rocq's feedback mechanism
 *)
 let add_wp_feedback_logger () : unit =
   match !wp_feedback_logger_id with
@@ -91,7 +91,7 @@ let redirect_errors : bool ref = Summary.ref ~name:"redirect_errors" false
 let print_hypothesis_help : bool ref = Summary.ref ~name:"print_hypothesis_help" false
 
 (**
-  Type of exceptions used in Wateproof
+  Type of exceptions used in Waterproof
 *)
 type wexn =
   | CastError of string (** Indicates that a cast made by the FFI has failed  *)

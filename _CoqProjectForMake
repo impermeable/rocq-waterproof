@@ -1,4 +1,4 @@
-src/META.coq-waterproof
+src/META.rocq-waterproof
 -R theories/ Waterproof
 -I src
 
@@ -57,6 +57,7 @@ theories/Tactics/BothDirections.v
 theories/Tactics/BothStatements.v
 theories/Tactics/Claims.v
 theories/Tactics/Choose.v
+theories/Tactics/Contraposition.v
 theories/Tactics/Obtain.v
 theories/Tactics/Conclusion.v
 theories/Tactics/Contradiction.v
@@ -85,7 +86,7 @@ theories/Util/TypeCorrector.v
 theories/Waterproof.v
 theories/Waterprove.v
 
-# Coq-Waterproof libraries
+# Rocq-Waterproof libraries
 
 ## Analysis
 theories/Libs/Logic/InformativeEpsilon.v
@@ -93,6 +94,7 @@ theories/Libs/Logic/ConstructiveLogic.v
 theories/Libs/Analysis.v
 theories/Libs/Analysis/ContinuityDomainNat.v
 theories/Libs/Analysis/ContinuityDomainR.v
+theories/Libs/Analysis/FiniteSums.v
 theories/Libs/Analysis/LimsupLiminfBolzano.v
 theories/Libs/Analysis/MetricSpaces.v
 theories/Libs/Analysis/OpenAndClosed.v
@@ -106,7 +108,7 @@ theories/Libs/Analysis/Subsequences.v
 theories/Libs/Analysis/SupAndInf.v
 theories/Libs/Sets.v
 
-# Coq-Waterproof tests
+# Rocq-Waterproof tests
 
 ## Chains
 tests/chains/Inequalities.v
@@ -138,6 +140,7 @@ tests/tactics/Choose.v
 tests/tactics/Obtain.v
 tests/tactics/Conclusion.v
 tests/tactics/Contradiction.v
+tests/tactics/Contraposition.v
 tests/tactics/Define.v
 tests/tactics/Either.v
 tests/tactics/Induction.v
@@ -159,4 +162,5 @@ tests/util/TypeCorrector.v
 ## Libs
 tests/libs/Negation.v
 tests/libs/Analysis/StrongInductionIndexSequence.v
+tests/libs/Analysis/FiniteSums.v
 tests/libs/Sets.v

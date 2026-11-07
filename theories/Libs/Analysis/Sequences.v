@@ -90,26 +90,26 @@ Proof. (* hide proof *)
     unfold Un_cv.
     To show : ∀ ε1 > 0,
        ∃ N2 : ℕ,
-       ∀ n ≥ N2, ｜a(n) - q｜ < ε1.
+       ∀ n ≥ N2, |a(n) - q| < ε1.
     Take ε1 > 0.
     By (i) it holds that
-      ∃ N1 ∈ ℕ, (∀ n ≥ N1, (｜a(n) - q｜ < ε1)%R)%nat.
+      ∃ N1 ∈ ℕ, (∀ n ≥ N1, (|a(n) - q| < ε1)%R)%nat.
     Obtain such an N1.
     Choose N2 := N1.
     Take n ≥ N2.
-    We conclude that ｜a(n) - q｜ < ε1.
+    We conclude that |a(n) - q| < ε1.
   * We need to show that Un_cv a q ⇒ a ⟶ q.
     Assume that Un_cv a q as (ii).
-    To show : ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (｜a(n) - q｜ < ε)%R)%nat.
+    To show : ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (|a(n) - q| < ε)%R)%nat.
     Take ε > 0.
     By (ii) it holds that  ∃ N2 : ℕ,
-       ∀ n ≥ N2, ｜a(n) - q｜ < ε.
+       ∀ n ≥ N2, |a(n) - q| < ε.
     Obtain such an N2.
     Choose N1 := N2.
     - Indeed, N1 ∈ ℕ.
-    - We need to show that (∀ n ≥ N1, (｜a(n) - q｜ < ε)%R)%nat.
+    - We need to show that (∀ n ≥ N1, (|a(n) - q| < ε)%R)%nat.
       Take n ≥ N1.
-      We conclude that ｜a(n) - q｜ < ε.
+      We conclude that |a(n) - q| < ε.
 Qed.
 
 (** Next, we introduce eventually equal sequences, and show that they converge to the same limit.*)
@@ -120,7 +120,7 @@ Lemma conv_evt_eq_seq (a b : ℕ → ℝ) (l : ℝ) :
    (evt_eq_sequences a b) ⇒ (a ⟶ l) ⇒ (b ⟶ l).
 Proof.
   Assume that evt_eq_sequences a b as (i) and a ⟶ l.
-  To show : ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (｜b(n) - l｜ < ε)%R)%nat.
+  To show : ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (|b(n) - l| < ε)%R)%nat.
   Take ε > 0.
   It holds that
     ∃ N1 ∈ ℕ,  for all n : ℕ, (n ≥ N1)%nat ⇨ |a n - l| < ε.
@@ -130,7 +130,7 @@ Proof.
   Obtain such a K.
   Choose N2 := Nat.max N1 K.
   * Indeed, N2 ∈ ℕ.
-  * We need to show that (∀ n ≥ N2, (｜b(n) - l｜ < ε)%R)%nat.
+  * We need to show that (∀ n ≥ N2, (|b(n) - l| < ε)%R)%nat.
     Take n ≥ N2.
     It holds that b n = a n.
     We conclude that & |b n - l| = |a n - l| < ε.
@@ -195,11 +195,11 @@ Lemma lim_const_seq (c : ℝ) :
   constant_sequence c ⟶ c.
 Proof.
   Define s := constant_sequence c.
-  To show: ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (｜s(n) - c｜ < ε)%R)%nat.
+  To show: ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (|s(n) - c| < ε)%R)%nat.
   Take ε > 0.
   Choose N1 := O.
   * Indeed, N1 ∈ ℕ.
-  * We need to show that (∀ n ≥ N1, (｜s(n) - c｜ < ε)%R)%nat.
+  * We need to show that (∀ n ≥ N1, (|s(n) - c| < ε)%R)%nat.
     Take n ≥ N1.
     It holds that s n = c.
     We conclude that & |s n - c| = | c - c | = |0| = 0 < ε.
@@ -219,12 +219,12 @@ Definition d := fun (n : ℕ) ↦ 1 / (n + 1).
 Lemma lim_d_0 : converges_to d 0.
 Proof.
   To show :
-      ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜d(n) - 0｜ < ε.
+      ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |d(n) - 0| < ε.
     Take ε > 0.
     By archimedN_exists it holds that ∃ n1 ∈ ℕ, n1 > / ε.
     Obtain such an n1. Choose N1 := n1.
     * Indeed, N1 ∈ ℕ.
-    * We need to show that ∀ n ≥ N1, ｜d(n) - 0｜ < ε.
+    * We need to show that ∀ n ≥ N1, |d(n) - 0| < ε.
       Take n ≥ N1.
       It suffices to show that -ε < 1 / (n + 1) - 0 < ε.
       We show both -ε < 1 / (n + 1) - 0 and 1 / (n + 1) - 0 < ε.
@@ -262,7 +262,7 @@ Theorem squeeze_theorem (a : ℕ → ℝ) (b : ℕ → ℝ) (c : ℕ → ℝ) (l
 Proof.
   Assume that ∀ n ∈ ℕ, a n ≤ b n ∧ b n ≤ c n and a ⟶ l.
   Assume that c ⟶ l.
-  To show: ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (｜b(n) - l｜ < ε)%R)%nat.
+  To show: ∀ ε > 0, ∃ N1 ∈ ℕ, (∀ n ≥ N1, (|b(n) - l| < ε)%R)%nat.
   Take ε > 0.
   It holds that ∃ Na ∈ ℕ, ∀ n : ℕ, (n ≥ Na)%nat ⇒ |a n - l| < ε.
   Obtain such an Na.
@@ -270,7 +270,7 @@ Proof.
   Obtain such an Nc.
   Choose N1 := Nat.max Na Nc.
   * Indeed, N1 ∈ ℕ.
-  * We need to show that (∀ n ≥ N1, (｜b(n) - l｜ < ε)%R)%nat.
+  * We need to show that (∀ n ≥ N1, (|b(n) - l| < ε)%R)%nat.
     Take n ≥ N1.
     We claim that -ε < a n - l.
     { It holds that (n ≥ Na)%nat.
@@ -305,7 +305,7 @@ Proof.
     It holds that ε > 0.
     It holds that for all eps : ℝ, eps > 0
       ⇨ ∃ N ∈ ℕ, for all n : ℕ, (n ≥ N)%nat
-      ⇨ ｜ a n - L ｜ < eps.
+      ⇨ | a n - L | < eps.
     It holds that ∃ Nn ∈ ℕ, ∀n : ℕ, (n ≥ Nn)%nat ⇒ R_dist (a n) L < ε.
     Obtain such an Nn.
     It holds that |a(Nn) - L| < ε.
@@ -349,10 +349,10 @@ Proof.
   It holds that ε > 0.
   It holds that for all eps : ℝ, eps > 0
     ⇨ ∃ N ∈ ℕ, for all n : ℕ, (n ≥ N)%nat
-    ⇨ ｜ a n - m ｜ < eps.
+    ⇨ | a n - m | < eps.
   It holds that for all eps : ℝ, eps > 0
     ⇨ ∃ N ∈ ℕ, for all n : ℕ, (n ≥ N)%nat
-    ⇨ ｜ b n - l ｜ < eps.
+    ⇨ | b n - l | < eps.
   It holds that ∃ N1 ∈ ℕ, ∀ n : ℕ, (n ≥ N1)%nat ⇒ | (a n) - m | < ε.
   Obtain such an N1.
   It holds that ∃ N2 ∈ ℕ, ∀ n : ℕ, (n ≥ N2)%nat ⇒ | (b n) - l | < ε.

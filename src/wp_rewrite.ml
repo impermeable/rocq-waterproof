@@ -31,7 +31,7 @@ open Util
 open Backtracking
 open Proofutils
 
-(* All the definitions below come from coq-core hidden library (i.e not visible in the API) *)
+(* All the definitions below come from rocq-core hidden library (i.e not visible in the API) *)
 
 type raw_rew_rule = (Constr.t Univ.in_universe_context_set * bool * raw_generic_argument option) CAst.t
 
@@ -254,7 +254,7 @@ let decompose_applied_relation (env: Environ.env) (sigma: Evd.evar_map) (c: cons
         | None -> None
 
 
-(* All the definitions below are inspired by the coq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
+(* All the definitions below are inspired by the rocq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
 let add_rew_rules (rewrite_database: rewrite_db) (rew_rules: rew_rule list): rewrite_db =
   List.fold_left (fun accu r -> {
     rdb_hintdn = HintDN.add r.rew_pat r accu.rdb_hintdn;
@@ -415,7 +415,7 @@ let fill_local_rewrite_database (): rewrite_db tactic =
 (**
   Waterproof autorewrite
 
-  This tactic is a rewrite of the coq-core's [autorewrite] tactic that will only consider current hypothesis as rewrite hints.
+  This tactic is a rewrite of the rocq-core's [autorewrite] tactic that will only consider current hypothesis as rewrite hints.
 *)
 let wp_autorewrite ?(print_hints: bool = false) (log: bool) (tac: trace tactic): unit tactic =
   let clause = {onhyps = Some []; concl_occs = Locus.AllOccurrences} in

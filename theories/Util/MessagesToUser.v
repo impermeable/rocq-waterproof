@@ -23,27 +23,27 @@ Require Import Ltac2.String.
 
 Require Import Waterproof.Waterproof.
 
-(** TODO: in later versions of Coq this can be replaced by a native function *)
+(** TODO: in later versions of Rocq this can be replaced by a native function *)
 Ltac2 fnl () := Message.of_string "
 ".
 
 Ltac2 Type FeedbackLevel := [ Debug | Info | Notice | Warning | Error ].
 
-Ltac2 @ external send_message_external: FeedbackLevel -> message -> unit := "rocq-runtime.plugins.coq-waterproof" "message_external".
-Ltac2 @ external throw_external: message -> unit := "rocq-runtime.plugins.coq-waterproof" "throw_external".
-Ltac2 @ external get_print_hypothesis_flag: unit -> bool := "rocq-runtime.plugins.coq-waterproof" "get_print_hypothesis_flag_external".
-Ltac2 @ external get_redirect_errors_flag : unit -> bool := "rocq-runtime.plugins.coq-waterproof" "get_redirect_errors_flag_external".
+Ltac2 @ external send_message_external: FeedbackLevel -> message -> unit := "rocq-runtime.plugins.rocq-waterproof" "message_external".
+Ltac2 @ external throw_external: message -> unit := "rocq-runtime.plugins.rocq-waterproof" "throw_external".
+Ltac2 @ external get_print_hypothesis_flag: unit -> bool := "rocq-runtime.plugins.rocq-waterproof" "get_print_hypothesis_flag_external".
+Ltac2 @ external get_redirect_errors_flag : unit -> bool := "rocq-runtime.plugins.rocq-waterproof" "get_redirect_errors_flag_external".
 Ltac2 @ external shortest_string_of_global_ffi : Std.reference -> string :=
-  "rocq-runtime.plugins.coq-waterproof" "shortest_string_of_global_external".
+  "rocq-runtime.plugins.rocq-waterproof" "shortest_string_of_global_external".
 
 Ltac2 @ external get_last_warning : unit -> message option :=
-  "rocq-runtime.plugins.coq-waterproof" "get_last_warning_external".
+  "rocq-runtime.plugins.rocq-waterproof" "get_last_warning_external".
 Ltac2 @ external get_feedback_log_external : FeedbackLevel -> message list :=
-  "rocq-runtime.plugins.coq-waterproof" "get_feedback_log_external".
+  "rocq-runtime.plugins.rocq-waterproof" "get_feedback_log_external".
 
 (** Can be removed in a later version of Rocq, probably 9.2,
     because it has then been integrated in Ltac2. *)
-Ltac2 @ external of_lconstr : constr -> message := "rocq-runtime.plugins.coq-waterproof" "message_of_lconstr".
+Ltac2 @ external of_lconstr : constr -> message := "rocq-runtime.plugins.rocq-waterproof" "message_of_lconstr".
 (** Prints at level 200 (no surrounding parentheses).
     Panics if there is more than one goal under focus. *)
 
@@ -65,7 +65,7 @@ Ltac2 get_feedback_log (lvl : FeedbackLevel) :=
   get_feedback_log_external lvl.
 
 Ltac2 info_notice (msg : message) := inform msg; notice msg.
-  (* We send both here because with the right settings in coq-waterproof,
+  (* We send both here because with the right settings in rocq-waterproof,
      they show up in different places in the editor. *)
 
 Ltac2 replace_notice (template : string) :=

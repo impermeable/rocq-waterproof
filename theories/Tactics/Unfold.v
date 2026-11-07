@@ -33,11 +33,11 @@ Ltac2 Type unfold_action := [
   | Rewrite (string, constr)
 ].
 
-Ltac2 @ external extract_def_ffi : string -> reference option := "rocq-runtime.plugins.coq-waterproof" "extract_def_external".
-Ltac2 @ external find_unfolds_by_str_ffi : string -> unfold_action list := "rocq-runtime.plugins.coq-waterproof" "find_unfold_by_str_external".
-Ltac2 @ external find_unfolds_by_ref_ffi : reference -> unfold_action list := "rocq-runtime.plugins.coq-waterproof" "find_unfold_by_ref_external".
+Ltac2 @ external extract_def_ffi : string -> reference option := "rocq-runtime.plugins.rocq-waterproof" "extract_def_external".
+Ltac2 @ external find_unfolds_by_str_ffi : string -> unfold_action list := "rocq-runtime.plugins.rocq-waterproof" "find_unfold_by_str_external".
+Ltac2 @ external find_unfolds_by_ref_ffi : reference -> unfold_action list := "rocq-runtime.plugins.rocq-waterproof" "find_unfold_by_ref_external".
 
-Ltac2 @ external get_unfold_references_ffi : unit -> reference list := "rocq-runtime.plugins.coq-waterproof" "get_unfold_references_external".
+Ltac2 @ external get_unfold_references_ffi : unit -> reference list := "rocq-runtime.plugins.rocq-waterproof" "get_unfold_references_external".
 
 
 Local Ltac2 _is_empty (ls : 'a list) :=
@@ -106,11 +106,19 @@ Ltac2 apply_in_constr (alt_char : constr) (x : constr) : constr :=
       let h1 := Fresh.fresh (Fresh.Free.of_goal () ) @__wp__h in
       intro $h1;
       try (apply $alt_char);
-      let rewritten_term := Control.goal() in
-      let h2 := Control.hyp h1 in
-      destruct $h2;
-      exact I;
-      rewritten_term)
+      (* The previous tactic application may have generated multiple 
+      goals. We are fine with extra goals if they can be 
+      closed by assumption *)
+      Control.focus 2 (Control.numgoals()) (fun () => Control.enter (fun () =>
+        assumption
+      ));
+      Control.focus 1 1 (fun () =>
+        let rewritten_term := Control.goal() in
+        let h2 := Control.hyp h1 in
+        destruct $h2;
+        exact I;
+        rewritten_term)
+      )
     ) in
   clear $h;
   return_term.
@@ -133,14 +141,22 @@ Ltac2 tactic_in_constr (equality : constr) (x : constr) : constr :=
   let return_term : constr :=
     (Control.focus 1 1 (fun () =>
       try (setoid_rewrite $equality);
-      let rewritten_term :=
-      match! goal with
-      | [|- ?c -> True ] => c
-      | [|- _] => throw (Message.of_string "Unexpected error in tactic_in_constr. Please report."); constr:(False)
-      end in
-      intro;
-      exact I;
-      rewritten_term)
+      (* The previous tactic application may have generated multiple 
+      goals. We are fine with extra goals if they can be 
+      closed by assumption *)
+      Control.focus 2 (Control.numgoals()) (fun () => Control.enter (fun () =>
+        assumption
+      ));
+      Control.focus 1 1 (fun () =>
+        let rewritten_term :=
+        match! goal with
+        | [|- ?c -> True ] => c
+        | [|- _] => throw (Message.of_string "Unexpected error in tactic_in_constr. Please report."); constr:(False)
+        end in
+        intro;
+        exact I;
+        rewritten_term)
+      )
     ) in
   clear $h;
   return_term.
@@ -213,7 +229,7 @@ Ltac2 unfold_in_all (unfold_method: constr -> constr)
             (print_tactic (concat_list [of_string "We need to show that ";
               of_lconstr unfolded_goal; of_string "."]))
           else
-            match Control.case (fun () => It suffices to show that $unfolded_goal; Control.zero Succeeded) with
+            match Control.case (fun () => wp_enough_base unfolded_goal; Control.zero Succeeded) with
             | Err Succeeded => (print_tactic (concat_list [of_string "It suffices to show that ";
                                 of_lconstr unfolded_goal; of_string "."]))
             | _ => warn (concat_list [of_string "The following suggestion will likely not work,";
@@ -229,7 +245,7 @@ Ltac2 unfold_in_all (unfold_method: constr -> constr)
           let it_holds_msg := fun (x : constr) => concat_list
             [of_string "It holds that "; of_lconstr x; of_string "."] in
           let test_and_print unfolded_h :=
-            match Control.case (fun () => It holds that $unfolded_h; Control.zero Succeeded) with
+            match Control.case (fun () => wp_assert_base unfolded_h; Control.zero Succeeded) with
             | Err Succeeded => print_tactic (it_holds_msg unfolded_h)
             | _ => warn (concat_list [of_string "The following suggestion will likely not work,";
             of_string " (this is probably caused by a misalignment in the automation for";

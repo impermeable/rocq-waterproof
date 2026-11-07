@@ -1,11 +1,11 @@
 {
-    "name": "coq-waterproof dev container",
+    "name": "rocq-waterproof dev container",
 
     "build": {
         "dockerfile": "Dockerfile"
     },
 
-    "onCreateCommand": "echo \"Installing coq-waterproof for the first time\" && dune build -p coq-waterproof",
+    "onCreateCommand": "echo \"Installing rocq-waterproof for the first time\" && dune build -p rocq-waterproof",
 
     "customizations": {
         "vscode": {

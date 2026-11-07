@@ -34,8 +34,8 @@ Require Import Chains.Inequalities.
 Ltac2 Type database_type := [ Main | Decidability | Shorten ].
 Ltac2 Type hint_db_name := string.
 
-Local Ltac2 @ external waterprove_ffi: int -> bool -> (unit -> constr) list -> hint_db_name list -> database_type -> unit := "rocq-runtime.plugins.coq-waterproof" "waterprove".
-Local Ltac2 @ external rwaterprove_ffi: int -> bool -> (unit -> constr) list -> hint_db_name list -> database_type -> constr list -> constr list -> unit := "rocq-runtime.plugins.coq-waterproof" "rwaterprove".
+Local Ltac2 @ external waterprove_ffi: int -> bool -> (unit -> constr) list -> hint_db_name list -> database_type -> unit := "rocq-runtime.plugins.rocq-waterproof" "waterprove".
+Local Ltac2 @ external rwaterprove_ffi: int -> bool -> (unit -> constr) list -> hint_db_name list -> database_type -> constr list -> constr list -> unit := "rocq-runtime.plugins.rocq-waterproof" "rwaterprove".
 
 Open Scope subset_scope.
 

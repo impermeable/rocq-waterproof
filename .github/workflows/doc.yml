@@ -31,7 +31,7 @@ jobs:
       - name: Build plugin
         uses: coq-community/docker-coq-action@v1
         with:
-          opam_file: 'coq-waterproof.opam'
+          opam_file: 'rocq-waterproof.opam'
           custom_image: 'rocq/rocq-prover:9.1-ocaml-4.14-flambda'
           before_script: |
             startGroup "Install dependencies"

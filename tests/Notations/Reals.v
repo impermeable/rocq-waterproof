@@ -44,3 +44,8 @@ Abort.
 
 Goal & |0| * | 3 | ≤ | 4 + 3 | - |5| ≤ 3 * |- 2 |.
 Abort.
+
+Local Parameter a : nat -> R.
+Goal ∀ x ∈ ℝ, ∀ n ∈ ℕ,
+   | a(n) - 2 + 4 - 3 | = 34.
+Abort.

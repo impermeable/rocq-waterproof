@@ -1,12 +1,12 @@
 # This _CoqProject file is intended for use with the coq-lsp library
 # We do a little hack to support two different build layouts
 -arg -w -arg -cannot-open-path
-src/META.coq-waterproof
+src/META.rocq-waterproof
 -R theories/ Waterproof
 -R _build/default/theories/ Waterproof
--I _build/install/default/lib/coq-waterproof/plugin
+-I _build/install/default/lib/rocq-waterproof/plugin
 -I _build/install/default/lib/
--R ../_build/default/coq-waterproof/theories/ Waterproof
--I ../_build/install/default/lib/coq-waterproof/plugin
+-R ../_build/default/rocq-waterproof/theories/ Waterproof
+-I ../_build/install/default/lib/rocq-waterproof/plugin
 -I ../_build/install/default/lib/
 -I src

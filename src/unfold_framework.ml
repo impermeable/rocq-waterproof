@@ -43,12 +43,12 @@ type unfold_action =
   let wp_unfold_map = Summary.ref ~name:"wp_unfold_map" StringMap.empty
 
 (** The table that associates global references to unfold actions *)
-let wp_unfold_tbl : (GlobRef.t, unfold_action) Hashtbl.t ref = Summary.ref ~name:"wp_unfold_tbl" (Hashtbl.create 60)
+let wp_unfold_tbl : unfold_action list GlobRef.Map_env.t ref = Summary.ref ~name:"wp_unfold_tbl" GlobRef.Map_env.empty
 
 (** The following constructions are necessary to ensure persistence of the tables.. *)
 
-let cache_unfold_map mp =
-  wp_unfold_map := mp
+let cache_unfold_map (s, id) =
+  wp_unfold_map := StringMap.add s id !wp_unfold_map
 
 let declare_unfold_map =
   let open Libobject in
@@ -60,8 +60,11 @@ let declare_unfold_map =
       classify_function = (fun _ -> Keep);
     }
 
-let cache_unfold_tbl tbl =
-  wp_unfold_tbl := tbl
+let cache_unfold_tbl (id, ua) =
+  wp_unfold_tbl := GlobRef.Map_env.update id
+      (function None -> Some [ua] | Some prev -> Some (ua::prev))
+      !wp_unfold_tbl
+
 
 let declare_unfold_tbl =
   let open Libobject in
@@ -75,16 +78,15 @@ let declare_unfold_tbl =
 
 let add_to_unfold_map (toks : string list) (id : GlobRef.t) : unit =
   let s = String.concat " " toks in
-  Lib.add_leaf (declare_unfold_map (StringMap.add s id !wp_unfold_map))
+  (* add_leaf puts (s, id) into the .vo *)
+  Lib.add_leaf (declare_unfold_map (s, id))
 
 let add_to_unfold_tbl (id : GlobRef.t) (ua : unfold_action) : unit =
-  let new_table = Hashtbl.copy !wp_unfold_tbl in
-  Hashtbl.add new_table id ua;
   (* Adding a copy here, because otherwise we seem to get strange behavior when
      one adds definitions later in a file: earlier in a file it will already use
      to try the new definition and failing because it is not in the context yet.
      TODO: check with an expert what is best practice here. *)
-  Lib.add_leaf (declare_unfold_tbl new_table)
+  Lib.add_leaf (declare_unfold_tbl (id, ua))
 
 let extract_def (s : string) : GlobRef.t option =
   StringMap.find_opt s !wp_unfold_map
@@ -144,14 +146,10 @@ let register_unfold_entry (id : GlobRef.t) (ue : unfold_entry) : unit =
       add_to_unfold_tbl id (Rewrite (s, f e))
 
 let get_all_references () : GlobRef.t list =
-  let lst = !wp_unfold_tbl |> Hashtbl.to_seq_keys |> List.of_seq in
-  (* Remove duplicates *)
-  let tbl = Hashtbl.create (List.length lst) in
-  List.iter (fun x -> Hashtbl.replace tbl x ()) lst;
-  Hashtbl.fold (fun key _ acc -> key :: acc) tbl []
+ !wp_unfold_tbl |> GlobRef.Map_env.domain |> GlobRef.Set_env.elements
 
 let find_unfold_actions_by_ref (r : GlobRef.t) : unfold_action list =
-  Hashtbl.find_all !wp_unfold_tbl r
+  Option.default [] (GlobRef.Map_env.find_opt r !wp_unfold_tbl)
 
 let find_unfold_actions_by_str (s : string) : unfold_action list =
   match extract_def s with

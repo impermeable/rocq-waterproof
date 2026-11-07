@@ -32,7 +32,7 @@ let loaded_hint_dataset: string list ref = ref ~name:"loaded_hint_dataset" []
   Dictionary with dataset names as keys and datasets as values
 *)
 let existing_datasets: hint_dataset StringMap.t ref = 
-  ref ~name:"existing_datasets" @@ List.fold_left (fun dict (name, dataset) -> StringMap.add name dataset dict) StringMap.empty [("Empty", empty); ("Core", core); ("Algebra", algebra); ("Integers", integers); ("RealsAndIntegers", reals_and_integers); ("Sets", sets); ("Intuition", intuition); ("ClassicalEpsilon", classical_epsilon)]
+  ref ~name:"existing_datasets" @@ List.fold_left (fun dict (name, dataset) -> StringMap.add name dataset dict) StringMap.empty [("Empty", empty); ("Core", core); ("Algebra", algebra); ("Integers", integers); ("RealsAndIntegers", reals_and_integers); ("Sets", sets); ("Intuition", intuition); ("ClassicalEpsilon", classical_epsilon); ("FiniteSums", finite_sums)]
 
 (**
   Adds a dataset to the currently loaded hint datasets

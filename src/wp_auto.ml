@@ -30,7 +30,7 @@ open Util
 open Backtracking
 open Proofutils
 
-(* All the definitions below come from coq-core hidden library (i.e not visible in the API) *)
+(* All the definitions below come from rocq-core hidden library (i.e not visible in the API) *)
 
 let auto_core_unif_flags_of st1 st2 = {
   modulo_conv_on_closed_terms = Some st1;
@@ -85,7 +85,7 @@ let exists_evaluable_reference (env: Environ.env) (evaluable_ref: Evaluable.t): 
   | Evaluable.EvalProjectionRef _ -> true
   | Evaluable.EvalVarRef v -> try ignore(Environ.lookup_named v env); true with Not_found -> false
 
-(* All the definitions below are inspired by the coq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
+(* All the definitions below are inspired by the rocq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
 
 (**
   Prints "idtac" if the [log] field is [true]

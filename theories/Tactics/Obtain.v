@@ -112,12 +112,12 @@ Ltac2 obtain_according_to (var : ident) (hyp : ident) :=
   | _ => ()
   end.*)
 
-(* Quick fix for Wateproof editor / Coq lsp, where
+(* Quick fix for Wateproof editor / Rocq lsp, where
   [Obtain such an
 
    Qed.]
   was interpreted [Obtain such an Qed.].
-  Although in Coq [Qed] is acceptable as variable name, it is confusing.
+  Although in Rocq [Qed] is acceptable as variable name, it is confusing.
   Hence we throw an error in the form of a 'Syntax error'.
 
   TODO: can probably be fixed with binders...

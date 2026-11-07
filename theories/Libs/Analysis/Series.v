@@ -107,7 +107,7 @@ Proof.
           By sigma_split_v2 it suffices to show that (k < l <= n)%nat.
           We conclude that (k < l <= n)%nat.
       }
-      (* TODO: find way of dealing with the case when coq cannot find parameters for apply ...*)
+      (* TODO: find way of dealing with the case when Rocq cannot find parameters for apply ...*)
       apply conv_evt_eq_seq with (a := fun Nn ↦ sigma a k (l-1) + sigma a l Nn).
       + By x we conclude that evt_eq_sequences (fun Nn ↦ (sigma a k (l - 1) + sigma a l Nn), fun Nn ↦ (sigma a k Nn)).
       + (*TODO: fix  We conclude that ((Nn) ↦ (sigma a k (l - 1) + sigma a l Nn)). *)

@@ -78,9 +78,8 @@ Qed.
 Goal (~P /\ ~Q) -> ~(P \/ Q).
 Proof.
   intro H.
-Abort. (*
   solve_by_manipulating_negation_in @H.
-Qed.*)
+Qed.
 
 (* Test 5: ~(P /\ Q) implies (~P \/ ~Q). *)
 Goal ~(P /\ Q) -> (~P \/ ~Q).

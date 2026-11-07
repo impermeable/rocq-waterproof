@@ -29,15 +29,33 @@ Require Import Waterprove.
 Local Ltac2 concat_list (ls : message list) : message :=
   List.fold_right concat ls (of_string "").
 
+(**
+  Custom version of the [enough] tactic that uses
+  the waterproof automation system to prove that the proposed
+  goal is enough to show the current goal.
+  If successful, replaces current goal by proposed goal.
+
+  We have added this to be able to use an enough tactic
+  that doesn't throw a fatal error, which is useful
+  in the expand framework.
+
+  Arguments:
+  - [new_goal]: proposed new goal.
+
+  Throws:
+  - [FailedToProve] if [rwaterprove] fails to prove that [new_goal]
+    is enough to show current goal.
+*)
+Ltac2 wp_enough_base (new_goal : constr) :=
+  let new_goal := correct_type_by_wrapping new_goal in
+  enough $new_goal by (waterprove 5 true Main).
+
 (** Attempts to prove that proposed goal is enough to show current goal.
   If succesful, replaces current goal by proposed goal. *)
 Local Ltac2 wp_enough (new_goal : constr) :=
   let err_msg := concat_list
     [of_string "Could not verify that it suffices to show "; of_lconstr new_goal; of_string "."] in
-  match Control.case (fun () =>
-    let new_goal := correct_type_by_wrapping new_goal in
-    enough $new_goal by (waterprove 5 true Main))
-  with
+  match Control.case (fun () => wp_enough_base new_goal) with
   | Val _ => ()
   | Err (FailedToProve _) => throw err_msg
   | Err exn => Control.zero exn
