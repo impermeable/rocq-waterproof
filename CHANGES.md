@@ -1,5 +1,27 @@
 # Change log for the rocq-waterproof library
 
+## Unreleased
+
+- Speed up the reals automation when there are many `Rabs`/`Rmax`/`Rmin`
+  terms in scope. Instead of case-splitting on every sign at once (`2^n`
+  branches for `n` terms), the hints now split one term at a time, starting
+  with the terms in the goal, and try `lra` after each split. Branches that
+  `lra` can already close are not split any further. If `lra` cannot close
+  every branch, the hints fall back to the full case split, so searches that
+  fail are not slower than before.
+  The new tactics `crush_R_abs_min_max_pruned` and `crush_R_abs_min_max_lra`
+  are the incremental versions of `crush_R_abs_min_max` and
+  `crush_R_abs_min_max; lra`.
+- `wp_auto` no longer rebuilds the local hint database after every step
+  when the local hypotheses did not change (as already done by `wp_eauto`
+  and Rocq's `auto`).
+- `By ...` called with a reason that is not a reference (e.g.
+  `By (H x Hx) it holds that ...`) now adds the reason to the local
+  hypotheses for the duration of the proof attempt, instead of
+  passing the term to the hint machinery. This removes Rocq's deprecation warning
+  `Use of the non-reference term ... in "using" clauses is deprecated` [non-reference-hint-using],
+  and makes the reason visible to automation that only looks at hypotheses (`lra`, `nra`, ...).
+
 ## Version 3.1.1+9.1
 
 - Name change to rocq-waterproof

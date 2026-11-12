@@ -426,18 +426,18 @@ Create HintDb wp_reals.
   #[export] Hint Extern 1 (~ (Rgt _ _) ) => lra : wp_reals.
   #[export] Hint Extern 1 (~ (@eq R _ _ ) ) => lra : wp_reals.
 
-  #[export] Hint Extern 2 ( @eq R _ _ ) => ltac2:(crush_R_abs_min_max ()): wp_reals.
+  #[export] Hint Extern 2 ( @eq R _ _ ) => ltac2:(crush_R_abs_min_max_pruned ()): wp_reals.
 
-  #[export] Hint Extern 2 ( Rle _ _ ) => ltac2:(crush_R_abs_min_max ()) : wp_reals.
-  #[export] Hint Extern 2 ( Rge _ _ ) => ltac2:(crush_R_abs_min_max ()) : wp_reals.
-  #[export] Hint Extern 2 ( Rlt _ _ ) => ltac2:(crush_R_abs_min_max ()) : wp_reals.
-  #[export] Hint Extern 2 ( Rgt _ _ ) => ltac2:(crush_R_abs_min_max ()) : wp_reals.
+  #[export] Hint Extern 2 ( Rle _ _ ) => ltac2:(crush_R_abs_min_max_pruned ()) : wp_reals.
+  #[export] Hint Extern 2 ( Rge _ _ ) => ltac2:(crush_R_abs_min_max_pruned ()) : wp_reals.
+  #[export] Hint Extern 2 ( Rlt _ _ ) => ltac2:(crush_R_abs_min_max_pruned ()) : wp_reals.
+  #[export] Hint Extern 2 ( Rgt _ _ ) => ltac2:(crush_R_abs_min_max_pruned ()) : wp_reals.
 
-  #[export] Hint Extern 3 (~ (Rle _ _) ) => cbn; ltac2:(crush_R_abs_min_max ()) : wp_reals.
-  #[export] Hint Extern 3 (~ (Rge _ _) ) => cbn; ltac2:(crush_R_abs_min_max ()); lra : wp_reals.
-  #[export] Hint Extern 3 (~ (Rlt _ _) ) => cbn; ltac2:(crush_R_abs_min_max ()); lra : wp_reals.
-  #[export] Hint Extern 3 (~ (Rgt _ _) ) => cbn; ltac2:(crush_R_abs_min_max ()); lra : wp_reals.
-  #[export] Hint Extern 3 (~ (@eq R _ _ ) ) => cbn; ltac2:(crush_R_abs_min_max ()); lra : wp_reals.
+  #[export] Hint Extern 3 (~ (Rle _ _) ) => cbn; ltac2:(crush_R_abs_min_max_pruned ()) : wp_reals.
+  #[export] Hint Extern 3 (~ (Rge _ _) ) => cbn; ltac2:(crush_R_abs_min_max_lra ()) : wp_reals.
+  #[export] Hint Extern 3 (~ (Rlt _ _) ) => cbn; ltac2:(crush_R_abs_min_max_lra ()) : wp_reals.
+  #[export] Hint Extern 3 (~ (Rgt _ _) ) => cbn; ltac2:(crush_R_abs_min_max_lra ()) : wp_reals.
+  #[export] Hint Extern 3 (~ (@eq R _ _ ) ) => cbn; ltac2:(crush_R_abs_min_max_lra ()) : wp_reals.
 
   #[export] Hint Extern 3 ( Rle _ _ ) => nra : wp_reals.
   #[export] Hint Extern 3 ( Rge _ _ ) => nra : wp_reals.

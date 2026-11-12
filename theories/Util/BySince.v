@@ -104,6 +104,35 @@ Ltac2 since_framework (by_tactic : constr list -> hint_db_name list -> unit) (cl
     end
   end.
 
+(** Returns [true] if [x] is a reference (a local variable, a constant, a constructor or
+  an inductive type) possibly applied to (implicit) arguments that are all evars.
+  This is similar to the check in Rocq when building hints from a "using" clause. *)
+Local Ltac2 is_reference (x : constr) : bool :=
+  let is_ref_head (h : constr) :=
+    match Constr.Unsafe.kind h with
+    | Constr.Unsafe.Var _ => true
+    | Constr.Unsafe.Constant _ _ => true
+    | Constr.Unsafe.Constructor _ _ => true
+    | Constr.Unsafe.Ind _ _ => true
+    | _ => false
+    end in
+  match Constr.Unsafe.kind x with
+  | Constr.Unsafe.App h args =>
+    Bool.and (is_ref_head h)
+      (Array.for_all (fun a => match Constr.Unsafe.kind a with
+                               | Constr.Unsafe.Evar _ _ => true
+                               | _ => false end) args)
+  | _ => is_ref_head x
+  end.
+
+(** Adds [xtr_lemma] (a proof term) to the local hypotheses, with statement [statement],
+  and returns the identifier of the new hypothesis. *)
+Local Ltac2 add_lemma_as_hyp (xtr_lemma : constr) (statement : constr) : ident :=
+  let aux_id := Fresh.fresh (Fresh.Free.of_goal ()) @_aux in
+  assert $statement as $aux_id;
+  Control.focus 1 1 (fun () => exact $xtr_lemma);
+  aux_id.
+
 Ltac2 unseal_lemma (xtr_lemma : constr) : ident :=
   let aux_id := Fresh.fresh (Fresh.Free.of_goal ()) @_aux in
   let statement_xtr_lemma := Constr.type xtr_lemma in
@@ -133,7 +162,16 @@ Ltac2 wrapper_core_by_tactic (by_tactic : constr list -> hint_db_name list -> un
     if xtr_lemma_contains_seal then
       (let aux_id := unseal_lemma xtr_lemma in
       (Some aux_id, Control.hyp aux_id))
-    else (None, xtr_lemma))
+    else if Bool.or (is_reference xtr_lemma) (Constr.has_evar xtr_lemma) then
+      (None, xtr_lemma)
+    else
+      (* Non-reference terms such as [(H x Hx)] are also added to the local
+        hypotheses: Rocq deprecates non-reference terms in the "using"
+        clauses of its hint machinery (warning [non-reference-hint-using]),
+        and as hypotheses they are in addition visible to automation that
+        only inspects the context (e.g. [lra], [nra]). *)
+      (let aux_id := add_lemma_as_hyp xtr_lemma (Constr.type xtr_lemma) in
+      (Some aux_id, Control.hyp aux_id)))
     in
   let unsealed_and_recorded := List.map unseal_and_record xtr_lemmas in
   let (opt_ids, aux_lemmas) := List.split unsealed_and_recorded in

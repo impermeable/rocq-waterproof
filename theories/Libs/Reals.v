@@ -256,3 +256,57 @@ Ltac2 crush_R_abs_min_max () :=
   repeat (destruct (Rcase_abs) in * );
   repeat (destruct (Rle_dec) in * );
   repeat (destruct (Rge_dec) in * ).
+
+(** Incremental versions of [crush_R_abs_min_max].
+
+    [crush_R_abs_min_max] case-splits on the sign of every [Rabs], [Rmax] and
+    [Rmin] in the goal and in all hypotheses at once. That gives [2^n] goals
+    for [n] such terms, whether or not they are relevant, and the automation
+    then works on each of them. The tactics below split on one term at a time
+    (terms in the goal first) and try [lra] after each split, so branches
+    that [lra] can already close are not split any further. *)
+
+(** Split one [Rcase_abs]/[Rle_dec]/[Rge_dec] (from an unfolded
+    [Rabs]/[Rmax]/[Rmin]), preferring terms that occur in the goal.
+    Fails if there is nothing left to split. *)
+Ltac2 split_one_abs_min_max () :=
+  match! goal with
+  | [ |- context [ Rcase_abs ?x ] ] => destruct (Rcase_abs $x) in *
+  | [ |- context [ Rle_dec ?x ?y ] ] => destruct (Rle_dec $x $y) in *
+  | [ |- context [ Rge_dec ?x ?y ] ] => destruct (Rge_dec $x $y) in *
+  | [ _ : context [ Rcase_abs ?x ] |- _ ] => destruct (Rcase_abs $x) in *
+  | [ _ : context [ Rle_dec ?x ?y ] |- _ ] => destruct (Rle_dec $x $y) in *
+  | [ _ : context [ Rge_dec ?x ?y ] |- _ ] => destruct (Rge_dec $x $y) in *
+  end.
+
+(** Split until [lra] closes the branch; fails as soon as one fully split
+    branch is not closed by [lra]. Same result as
+    [crush_R_abs_min_max (); lra], but a failure costs about [n] calls to
+    [lra] instead of [2^n]. *)
+Ltac2 rec split_abs_min_max_lra () :=
+  first
+  [ ltac1:(lra)
+  | split_one_abs_min_max (); split_abs_min_max_lra () ].
+
+Ltac2 unfold_abs_min_max () :=
+  unfold Rdist in *;
+  unfold Rabs in *;
+  unfold Rmax in *;
+  unfold Rmin in *.
+
+(** Same goals as [crush_R_abs_min_max (); lra]. *)
+Ltac2 crush_R_abs_min_max_lra () :=
+  unfold_abs_min_max (); split_abs_min_max_lra ().
+
+(** Drop-in replacement for [crush_R_abs_min_max]: closes the goal if [lra]
+    can close every branch, and otherwise falls back to the full case split,
+    leaving all branches to the automation as [crush_R_abs_min_max] does.
+
+    The fallback is deliberately the full split rather than a pruned one:
+    on goals the automation cannot prove, [lra] typically fails on every
+    branch, and trying it at every node of the split tree (about [2^(n+1)]
+    calls) made failing searches slower than the plain full split. The
+    first attempt only costs about [n] calls to [lra] when it fails. *)
+Ltac2 crush_R_abs_min_max_pruned () :=
+  unfold_abs_min_max ();
+  first [ split_abs_min_max_lra () | crush_R_abs_min_max () ].
