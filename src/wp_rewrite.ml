@@ -368,8 +368,12 @@ let to_raw_rew_rule (env: Environ.env) (sigma: Evd.evar_map) (hyp: Constrexpr.co
   let sigma = Evd.from_ustate context in
   let sigma = Evd.collapse_sort_variables ~only_above_prop:false sigma in
   let constr = EConstr.to_constr sigma econstr in
-  let uctx = Evd.universe_context_set sigma in
-  let () = Global.push_context_set uctx in
+  let (univs, csts) = Evd.universe_context_set sigma in
+  let univs = match UGraph.check_declared_universes (Environ.universes (Global.env ())) univs with
+  | Ok () -> Univ.Level.Set.empty
+  | Error undeclared -> undeclared
+  in
+  let () = Global.push_context_set (univs, csts) in
   CAst.make ?loc:(Constrexpr_ops.constr_loc hyp) (constr, true)
 
 (**
