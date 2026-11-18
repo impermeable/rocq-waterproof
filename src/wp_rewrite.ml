@@ -373,7 +373,10 @@ let to_raw_rew_rule (env: Environ.env) (sigma: Evd.evar_map) (hyp: Constrexpr.co
   | Ok () -> Univ.Level.Set.empty
   | Error undeclared -> undeclared
   in
-  let () = Global.push_context_set (univs, csts) in
+  (* The unification levels become global levels *)
+  let ctx, subst = UnivGen.globalize_context_set (univs, csts) in
+  let () = Global.push_context_set ctx in
+  let constr = Vars.subst_univs_level_constr (Sorts.QVar.Map.empty, subst) constr in
   CAst.make ?loc:(Constrexpr_ops.constr_loc hyp) (constr, true)
 
 (**
