@@ -261,7 +261,9 @@ let search (trace: trace) (max_depth: int) (lems: Tactypes.delayed_open_constr l
                   begin
                     TraceTactics.typedGoalEnter
                       begin fun goal ->
-                        let local_db' = make_local_db goal in
+                        let local_db' =
+                          if Goal.hyps goal == Goal.hyps gl then local_db else make_local_db goal
+                        in
                         if List.mem (Goal.hyps goal, Goal.concl goal, Goal.sigma goal) previous_envs
                           then tclZERO (SearchBound no_trace)
                           else inner_search new_trace (n-1) ((Goal.hyps goal, Goal.concl goal, Goal.sigma goal)::previous_envs) local_db'
