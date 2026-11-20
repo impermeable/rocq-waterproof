@@ -12,6 +12,8 @@
   The new tactics `crush_R_abs_min_max_pruned` and `crush_R_abs_min_max_lra`
   are the incremental versions of `crush_R_abs_min_max` and
   `crush_R_abs_min_max; lra`.
+  This also makes all the negation automation work in the same way, avoiding
+  a possible exponential blowup in the number of branches for "not less equals".
 - `wp_auto` no longer rebuilds the local hint database after every step
   when the local hypotheses did not change (as already done by `wp_eauto`
   and Rocq's `auto`).
