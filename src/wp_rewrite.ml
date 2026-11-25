@@ -238,16 +238,15 @@ let decompose_applied_relation (env: Environ.env) (sigma: Evd.evar_map) (c: cons
     if 2 <= len then
       let c1 = args.(len - 2) in
       let c2 = args.(len - 1) in
-      Some (if left2right then c1 else c2)
+      let c = if left2right then c1 else c2 in
+      if EConstr.isEvar sigma c then None else Some c
     else None
-  in match find_rel ctype with
-    | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
-    | None ->
-        let ctx,t' = Reductionops.whd_decompose_prod_decls env sigma ctype in (* Search for underlying eq *)
-        let ctype = EConstr.it_mkProd_or_LetIn t' ctx in
-        match find_rel ctype with
-        | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
-        | None -> None
+  in
+  let ctx,t' = Reductionops.whd_decompose_prod_decls env sigma ctype in (* Search for underlying eq *)
+  let ctype = EConstr.it_mkProd_or_LetIn t' ctx in
+  match find_rel ctype with
+  | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
+  | None -> None
 
 
 (* All the definitions below are inspired by the coq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
