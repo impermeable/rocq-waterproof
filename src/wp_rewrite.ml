@@ -238,25 +238,15 @@ let decompose_applied_relation (env: Environ.env) (sigma: Evd.evar_map) (c: cons
     if 2 <= len then
       let c1 = args.(len - 2) in
       let c2 = args.(len - 1) in
-      Some (if left2right then c1 else c2)
+      let c = if left2right then c1 else c2 in
+      if EConstr.isEvar sigma c then None else Some c
     else None
   in
-  let has_variable_side ty =
-    let ctx, t = Reductionops.whd_decompose_prod_decls env sigma ty in
-    let sigma, cl = EClause.make_evar_clause env sigma (EConstr.it_mkProd_or_LetIn t ctx) in
-    let (_, args) = EConstr.decompose_app sigma cl.EClause.cl_concl in
-    let len = Array.length args in
-    2 <= len && EConstr.isEvar sigma (if left2right then args.(len - 2) else args.(len - 1))
-  in
-  if has_variable_side ctype then None
-  else match find_rel ctype with
-    | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
-    | None ->
-        let ctx,t' = Reductionops.whd_decompose_prod_decls env sigma ctype in (* Search for underlying eq *)
-        let ctype = EConstr.it_mkProd_or_LetIn t' ctx in
-        match find_rel ctype with
-        | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
-        | None -> None
+  let ctx,t' = Reductionops.whd_decompose_prod_decls env sigma ctype in (* Search for underlying eq *)
+  let ctype = EConstr.it_mkProd_or_LetIn t' ctx in
+  match find_rel ctype with
+  | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
+  | None -> None
 
 
 (* All the definitions below are inspired by the coq-core hidden library (i.e not visible in the API) but modified for Waterproof *)
