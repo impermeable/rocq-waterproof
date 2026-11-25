@@ -240,7 +240,16 @@ let decompose_applied_relation (env: Environ.env) (sigma: Evd.evar_map) (c: cons
       let c2 = args.(len - 1) in
       Some (if left2right then c1 else c2)
     else None
-  in match find_rel ctype with
+  in
+  let has_variable_side ty =
+    let ctx, t = Reductionops.whd_decompose_prod_decls env sigma ty in
+    let sigma, cl = EClause.make_evar_clause env sigma (EConstr.it_mkProd_or_LetIn t ctx) in
+    let (_, args) = EConstr.decompose_app sigma cl.EClause.cl_concl in
+    let len = Array.length args in
+    2 <= len && EConstr.isEvar sigma (if left2right then args.(len - 2) else args.(len - 1))
+  in
+  if has_variable_side ctype then None
+  else match find_rel ctype with
     | Some c -> Some { hyp_pat = c; hyp_ty = ctype }
     | None ->
         let ctx,t' = Reductionops.whd_decompose_prod_decls env sigma ctype in (* Search for underlying eq *)
