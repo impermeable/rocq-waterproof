@@ -1,4 +1,4 @@
-(coq.theory
+(rocq.theory
   (name __WaterproofTests)
   ; Disable from public build
   (package coq-waterproof)

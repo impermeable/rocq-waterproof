@@ -29,7 +29,7 @@ depends: [
   "rocq-core" {>= "9.1" & < "9.2" | = "dev" }
   "rocq-stdlib" {>= "9" | = "dev" }
   "coq" {>= "9.1" & < "9.2" | = "dev"}
-  "dune" {>= "3.8"}
+  "dune" {>= "3.21"}
 ]
 
 build: [
