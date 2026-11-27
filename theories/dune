@@ -1,7 +1,7 @@
 (coq.theory
  (name Waterproof)
  (package coq-waterproof)
- (theories Stdlib Ltac2)
+ (theories micromega_plugin Stdlib Ltac2)  ; we need micromega_plugin because dune doesn't handle transitive dependencies
  (plugins coq-waterproof.plugin rocq-runtime.plugins.ltac rocq-runtime.plugins.ltac2))
 
 (include_subdirs qualified)
