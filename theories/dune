@@ -1,4 +1,4 @@
-(coq.theory
+(rocq.theory
  (name Waterproof)
  (package coq-waterproof)
  (theories Stdlib Ltac2)

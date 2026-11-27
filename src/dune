@@ -4,4 +4,4 @@
   (libraries rocq-runtime.plugins.ltac rocq-runtime.plugins.ltac2)
   (flags :standard -rectypes -w -27 -warn-error -3))
 
-(coq.pp (modules g_waterproof databases))
+(rocq.pp (modules g_waterproof databases))
